@@ -191,21 +191,29 @@
     <!-- Màn hình phóng to -->
     <div class="fullscreen-container" id="fullscreen">
         <button class="close-btn" onclick="closeFullscreen()">✖</button>
-        <img class="fullscreen-image" id="fullscreen-img" src="" alt="Ảnh lớn">
     </div>
 
     <script>
+        const menuIcon = document.getElementById('menu-icon');
+        const menuMobile = document.getElementById('menu-mobile');
+        const closeMenu = document.getElementById('close-menu');
+
+        let autoSlideInterval;
+        let isFullscreen = false;
         let index = 0;
+
         const slides = document.querySelectorAll('.slide img');
         const slider = document.getElementById('slider');
         const fullscreen = document.getElementById('fullscreen');
         const fullscreenImg = document.getElementById('fullscreen-img');
-        let autoSlideInterval;
 
+        // Chuyển ảnh tự động
         function startAutoSlide() {
             autoSlideInterval = setInterval(() => {
-                showSlide(index + 1);
-            }, 8888);
+                if (!isFullscreen) {
+                    showSlide(index + 1);
+                }
+            }, 8000);
         }
 
         function stopAutoSlide() {
@@ -216,12 +224,14 @@
             index = i;
             fullscreenImg.src = slides[index].src;
             fullscreen.style.display = "flex";
-            stopAutoSlide();
+            isFullscreen = true;
+            stopAutoSlide(); // Dừng tự động chuyển ảnh
         }
 
         function closeFullscreen() {
             fullscreen.style.display = "none";
-            startAutoSlide();
+            isFullscreen = false;
+            startAutoSlide(); // Bắt đầu tự động chuyển ảnh lại
         }
 
         function showSlide(i) {
@@ -229,14 +239,60 @@
             slider.style.transform = `translateX(-${index * 100}%)`;
         }
 
-        document.getElementById('menu-icon').addEventListener('click', () => {
-            document.getElementById('menu-mobile').classList.toggle('open');
+        function changeFullscreenImage(direction) {
+            index = (index + direction + slides.length) % slides.length;
+            fullscreenImg.src = slides[index].src;
+        }
+
+        // Vuốt ảnh để chuyển ảnh
+        let startX = 0;
+        let isDragging = false;
+
+        fullscreenImg.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
         });
 
-        document.getElementById('close-menu').addEventListener('click', () => {
-            document.getElementById('menu-mobile').classList.remove('open');
+        fullscreenImg.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            let moveX = e.touches[0].clientX - startX;
+            if (moveX > 50) {
+                changeFullscreenImage(-1);
+                isDragging = false;
+            } else if (moveX < -50) {
+                changeFullscreenImage(1);
+                isDragging = false;
+            }
         });
 
+        fullscreenImg.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        // Menu toggle
+        menuIcon.addEventListener('click', () => {
+            if (menuMobile.classList.contains('open')) {
+                closeMenuMobile();
+            } else {
+                openMenuMobile();
+            }
+        });
+
+        closeMenu.addEventListener('click', closeMenuMobile);
+
+        function openMenuMobile() {
+            menuMobile.classList.add('open');
+            menuIcon.textContent = '✖';
+            document.body.style.overflow = "hidden"; // Chặn cuộn
+        }
+
+        function closeMenuMobile() {
+            menuMobile.classList.remove('open');
+            menuIcon.textContent = '☰';
+            document.body.style.overflow = "auto"; // Cho phép cuộn lại
+        }
+
+        // Bắt đầu tự động chuyển ảnh khi trang được load
         startAutoSlide();
     </script>
 
