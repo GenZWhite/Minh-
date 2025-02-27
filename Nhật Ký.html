@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Những Kỷ Niệm Đáng Nhớ Giữa Nguyễn Tiến Minh & Nguyễn Minh Anh</title>
+
+    <meta name="description" content="Câu chuyện về những chuyến đi đáng nhớ của Tiến Minh & Minh Anh, nơi lưu giữ kỷ niệm và cảm xúc.">
+    <meta name="keywords" content="Tiến Minh, Minh Anh, chuyến đi, kỷ niệm, du lịch, hành trình, khám phá">
+    <meta name="author" content="Tiến Minh & Minh Anh">
+    
+    <meta property="og:title" content="Tiến Minh & Minh Anh - Những Chuyến Đi Đáng Nhớ">
+    <meta property="og:description" content="Câu chuyện về hành trình du lịch đầy kỷ niệm của Tiến Minh & Minh Anh.">
+    <meta property="og:image" content="https://yourwebsite.com/image.jpg">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta name="robots" content="index, follow">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('Web.png'); /* Chèn ảnh nền */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(88, 88, 88, 0);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .logo a {
+            color: #ff1491d0; /* Đổi màu chữ Logo sang hồng */
+            text-decoration: none; /* Bỏ dấu gạch chân */
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            font-size: 30px;
+            color: #ff1493;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .menu-mobile {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: top 0.5s ease-in-out;
+        }
+
+        .menu-mobile a {
+            font-size: 24px;
+            color: black;
+            text-decoration: none;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .menu-mobile.open {
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <!-- Khi bấm vào logo sẽ chuyển về Web.html -->
+        <div class="logo">
+            <a href="Nhật Ký.html">Minh Anh</a>
+        </div>
+        <div class="menu-icon" id="menu-icon">☰</div>
+    </div>
+
+    <div class="menu-mobile" id="menu-mobile">
+        <a href="Intro.html">Giới Thiệu</a>
+        <a href="Trip.html">Chuyến Đi</a>
+        <a href="Diary.html">Nhật Ký</a>
+    </div>
+
+    <script>
+        const menuIcon = document.getElementById('menu-icon');
+        const menuMobile = document.getElementById('menu-mobile');
+
+        menuIcon.addEventListener('click', () => {
+            if (menuMobile.classList.contains('open')) {
+                menuMobile.classList.remove('open');
+                menuIcon.textContent = '☰';
+            } else {
+                menuMobile.classList.add('open');
+                menuIcon.textContent = '✖';
+            }
+        });
+    </script>
+</body>
+</html>

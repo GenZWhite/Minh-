@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="wrapper">
+    <form id="loginForm">
+      <h1>Đăng Nhập</h1>
+      <div class="input-box">
+        <input type="text" id="username" placeholder="Tên Tài Khoản" required>
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="password" id="password" placeholder="Mật Khẩu" required>
+        <i class='bx bxs-lock-alt'></i>
+      </div>
+      <div class="remember-forgot">
+        <label><input type="checkbox"></label>
+        <a href="#">Tên Tài Khoản & Mật Khẩu do Tiến Minh cung cấp</a>
+      </div>
+      <button type="submit" class="btn">Đăng Nhập</button>
+      <div class="register-link">
+        <div class="remember-forgot">
+        </div>
+      </div>
+      <p id="errorMsg" style="color: red; display: none;">Tên đăng nhập hoặc mật khẩu không đúng!</p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Ngăn chặn form gửi đi
+
+      // Lấy giá trị từ form
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Danh sách tài khoản hợp lệ
+      var validUsers = {
+        "Nguyễn Tiến Minh": "MA-1588",
+        "Nguyễn Minh Anh": "MA-1588",
+      };
+
+      // Kiểm tra tên đăng nhập và mật khẩu
+      if (validUsers[username] && validUsers[username] === password) {
+        
+        window.location.href = "Nhật Ký.html"; 
+      } else {
+        document.getElementById('errorMsg').style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
