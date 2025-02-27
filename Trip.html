@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyến Đi - Tiến Minh & Minh Anh</title>
+    <meta name="description" content="Những chuyến đi của Tiến Minh & Minh Anh, khám phá những địa điểm tuyệt vời.">
+    <meta name="keywords" content="Tiến Minh, Minh Anh, chuyến đi, du lịch, hành trình, địa điểm đẹp">
+    <meta name="author" content="Tiến Minh & Minh Anh">
+    <meta property="og:title" content="Chuyến Đi - Tiến Minh & Minh Anh">
+    <meta property="og:description" content="Hành trình khám phá những địa điểm tuyệt vời của Tiến Minh & Minh Anh.">
+    <meta property="og:image" content="https://yourwebsite.com/contact-thumbnail.jpg">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta name="robots" content="index, follow">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container nền */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-rows: 50% 50%;
+            z-index: -1;
+        }
+
+        /* Ảnh động */
+        .slider-background {
+            overflow: hidden;
+            position: relative;
+            touch-action: pan-x;
+        }
+
+        .slider {
+            display: flex;
+            width: 500%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Ảnh tĩnh */
+        .static-background {
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(88, 88, 88, 0);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .logo a {
+            color: #ff1493;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            font-size: 30px;
+            color: #ff1491a2;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        /* Menu di động */
+        .menu-mobile {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: top 0.5s ease-in-out;
+        }
+
+        .menu-mobile a {
+            font-size: 24px;
+            color: black;
+            text-decoration: none;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .menu-mobile.open {
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+       <div class="logo">
+            <a href="Nhật Ký.html">Minh Anh</a>
+        </div>
+        <div class="menu-icon" id="menu-icon">☰</div>
+    </div>
+
+    <div class="menu-mobile" id="menu-mobile">
+        <a href="Intro.html">Giới Thiệu</a>
+        <a href="Trip.html">Chuyến Đi</a>
+        <a href="Diary.html">Nhật Ký</a>
+    </div>
+
+    <div class="background-container">
+        <!-- Nửa trên -->
+        <div class="slider-background" id="slider-top-left">
+            <div class="slider">
+                <div class="slide" style="background-image: url('minhanh.png');"></div>
+                <div class="slide" style="background-image: url('Web.png');"></div>
+                <div class="slide" style="background-image: url('image3.jpg');"></div>
+                <div class="slide" style="background-image: url('image4.jpg');"></div>
+                <div class="slide" style="background-image: url('image5.jpg');"></div>
+            </div>
+        </div>
+        <div class="static-background" style="background-image: url('Chuyến\ đi\ đầu\ tiên.png');"></div>
+
+        <!-- Nửa dưới -->
+        <div class="static-background" style="background-image: url('Chuyến\ đi\ cuối\ cùng.png');"></div>
+        <div class="slider-background" id="slider-bottom-right">
+            <div class="slider">
+                <div class="slide" style="background-image: url('');"></div>
+                <div class="slide" style="background-image: url('Hạ\ Long\ 1.png');"></div>
+                <div class="slide" style="background-image: url('Hạ\ Long\ 2.png');"></div>
+                <div class="slide" style="background-image: url('Hạ\ Long\ 3.png');"></div>
+                <div class="slide" style="background-image: url('Hạ\ Long\ 4.png');"></div>
+                <div class="slide" style="background-image: url('Hạ\ Long\ 5.png');"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setupSlider(sliderContainer) {
+            const slider = sliderContainer.querySelector('.slider');
+            let index = 0;
+            let startX = 0;
+            let isSwiping = false;
+
+            function showSlide(i) {
+                index = (i + slider.children.length) % slider.children.length;
+                slider.style.transform = `translateX(-${index * 100}%)`;
+            }
+
+            function autoSlide() {
+                showSlide(index + 1);
+            }
+
+            let autoSlideInterval = setInterval(autoSlide, 8888);
+
+            // Xử lý vuốt
+            sliderContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isSwiping = true;
+                clearInterval(autoSlideInterval);
+            });
+
+            sliderContainer.addEventListener('touchmove', (e) => {
+                if (!isSwiping) return;
+                let diff = e.touches[0].clientX - startX;
+                if (Math.abs(diff) > 50) {
+                    showSlide(diff > 0 ? index - 1 : index + 1);
+                    isSwiping = false;
+                    autoSlideInterval = setInterval(autoSlide, 8888);
+                }
+            });
+
+            sliderContainer.addEventListener('touchend', () => {
+                isSwiping = false;
+            });
+        }
+
+        document.querySelectorAll('.slider-background').forEach(setupSlider);
+
+        // Xử lý mở menu
+        const menuIcon = document.getElementById('menu-icon');
+        const menuMobile = document.getElementById('menu-mobile');
+
+        menuIcon.addEventListener('click', () => {
+            menuMobile.classList.toggle('open');
+            menuIcon.textContent = menuMobile.classList.contains('open') ? '✖' : '☰';
+        });
+    </script>
+</body>
+</html>

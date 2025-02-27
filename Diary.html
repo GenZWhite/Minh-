@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật Ký - Tiến Minh & Minh Anh</title>
+    
+    <meta name="description" content="Nhật ký hành trình và những khoảnh khắc đáng nhớ của Tiến Minh & Minh Anh.">
+    <meta name="keywords" content="Nhật ký, Tiến Minh, Minh Anh, kỷ niệm, hành trình, du lịch">
+    <meta name="author" content="Tiến Minh & Minh Anh">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("nen.png");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Thanh menu */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Menu di động */
+        .menu-mobile {
+            position: fixed;
+            top: -100vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: top 0.5s ease-in-out;
+            z-index: 2000;
+        }
+
+        .menu-mobile a {
+            font-size: 24px;
+            color: black;
+            text-decoration: none;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .menu-mobile.open {
+            top: 0;
+        }
+
+        /* Nút đóng menu */
+        .close-menu {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Slider ảnh động */
+        .slider-container {
+            width: 90vw;
+            height: 50vh;
+            overflow: hidden;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 60px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Màn hình phóng to */
+        .fullscreen-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .fullscreen-image {
+            max-width: 95%;
+            max-height: 90%;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            border: none;
+            background: none;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Thanh Menu -->
+    <div class="navbar">
+        <div class="logo">
+            <a href="Nhật Ký.html">Minh Anh</a>
+        </div>
+        <div class="menu-icon" id="menu-icon">☰</div>
+    </div>
+
+    <!-- Menu di động -->
+    <div class="menu-mobile" id="menu-mobile">
+        <div class="close-menu" id="close-menu">✖</div>
+        <a href="Intro.html">Giới Thiệu</a>
+        <a href="Trip.html">Chuyến Đi</a>
+        <a href="Diary.html">Nhật Ký</a>
+    </div>
+
+    <!-- Slider ảnh động -->
+    <div class="slider-container" id="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide" onclick="openFullscreen(0)"><img src="minhanh.png"></div>
+            <div class="slide" onclick="openFullscreen(1)"><img src="traitim.png"></div>
+            <div class="slide" onclick="openFullscreen(2)"><img src="Chuyến đi đầu tiên.png"></div>
+            <div class="slide" onclick="openFullscreen(3)"><img src="Chuyến đi cuối cùng.png"></div>
+            <div class="slide" onclick="openFullscreen(4)"><img src="hinh-5.jpg"></div>
+        </div>
+    </div>
+
+    <!-- Màn hình phóng to -->
+    <div class="fullscreen-container" id="fullscreen">
+        <button class="close-btn" onclick="closeFullscreen()">✖</button>
+        <img class="fullscreen-image" id="fullscreen-img" src="" alt="Ảnh lớn">
+    </div>
+
+    <script>
+        let index = 0;
+        const slides = document.querySelectorAll('.slide img');
+        const slider = document.getElementById('slider');
+        const fullscreen = document.getElementById('fullscreen');
+        const fullscreenImg = document.getElementById('fullscreen-img');
+        let autoSlideInterval;
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                showSlide(index + 1);
+            }, 8888);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        function openFullscreen(i) {
+            index = i;
+            fullscreenImg.src = slides[index].src;
+            fullscreen.style.display = "flex";
+            stopAutoSlide();
+        }
+
+        function closeFullscreen() {
+            fullscreen.style.display = "none";
+            startAutoSlide();
+        }
+
+        function showSlide(i) {
+            index = (i + slides.length) % slides.length;
+            slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        document.getElementById('menu-icon').addEventListener('click', () => {
+            document.getElementById('menu-mobile').classList.toggle('open');
+        });
+
+        document.getElementById('close-menu').addEventListener('click', () => {
+            document.getElementById('menu-mobile').classList.remove('open');
+        });
+
+        startAutoSlide();
+    </script>
+
+</body>
+</html>
